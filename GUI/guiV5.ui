@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1116</width>
+    <height>759</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>A-Stak</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../../../../../../../../../Masterarbeit/th_ab_logo.png</normaloff>../../../../../../../../../../Masterarbeit/th_ab_logo.png</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tab">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>681</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="statusTip">
+     <string/>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="v_tab">
+     <attribute name="title">
+      <string>Vorbereitung</string>
+     </attribute>
+     <widget class="QFrame" name="v_tab_DrCellPath_frame">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>491</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="v_tab_DrCellPath_label">
+         <property name="statusTip">
+          <string>DrCell Pfad</string>
+         </property>
+         <property name="text">
+          <string>DrCell Path:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="v_tab_DrCellPath_lineEdit">
+         <property name="statusTip">
+          <string>DrCell Pfad</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="v_tab_DrCellPath_browse_button">
+         <property name="statusTip">
+          <string>Browse Button</string>
+         </property>
+         <property name="text">
+          <string>Browse</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="v_tab_libraries_button">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>10</y>
+        <width>131</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Installiere Libraries</string>
+      </property>
+      <property name="text">
+       <string>Installiere Libraries</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="v_tab_MatLabPath_frame">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>70</y>
+        <width>491</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="v_tab_MatLabPath_label">
+         <property name="statusTip">
+          <string>MatLab Pfad</string>
+         </property>
+         <property name="text">
+          <string>MatLab Path:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="v_tab_MatLabPath_lineEdit">
+         <property name="statusTip">
+          <string>MatLab Pfad</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="v_tab_MatLabPath_browse_button">
+         <property name="statusTip">
+          <string>Browse Button</string>
+         </property>
+         <property name="text">
+          <string>Browse</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="d_tab">
+     <attribute name="title">
+      <string>Datenimport</string>
+     </attribute>
+     <widget class="QFrame" name="d_tab_browse_frame">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>491</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="d_tab_browse_frame_label">
+         <property name="statusTip">
+          <string>Datei Name</string>
+         </property>
+         <property name="text">
+          <string>Datei Name</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="d_tab_browse_frame_lineEdit">
+         <property name="statusTip">
+          <string>Datei Pfad</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="d_tab_browse_frame_button">
+         <property name="statusTip">
+          <string>Browse Button</string>
+         </property>
+         <property name="text">
+          <string>Browse</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QPushButton" name="d_tab_data_import_button">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>131</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Importiere Datei</string>
+      </property>
+      <property name="text">
+       <string>Importiere Datei</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="d_tab_plot_button">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>80</y>
+        <width>131</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Plote Spike Trains</string>
+      </property>
+      <property name="text">
+       <string>Plote Spike Trains</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="sta_tab">
+     <attribute name="title">
+      <string>Spike Train Analyse</string>
+     </attribute>
+     <widget class="QTabWidget" name="sta_tab_tab">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>681</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Spike Train Analyse Tab</string>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="sta_tab_matlab_tab">
+       <attribute name="title">
+        <string>MatLab</string>
+       </attribute>
+       <widget class="QComboBox" name="sta_tab_matlab_tab_feature_comboBox">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>20</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sta_tab_matlab_tab_feature_label">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature</string>
+        </property>
+        <property name="text">
+         <string>Feature:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sta_tab_matlab_tab_feature_calc_button">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>60</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature berechnen</string>
+        </property>
+        <property name="text">
+         <string>Berechnen</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sta_tab_matlab_tab_auto_calc_label">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Ausgabeformat</string>
+        </property>
+        <property name="text">
+         <string>Ausgabeformat:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="sta_tab_matlab_tab_auto_calc_comboBox">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>20</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Ausgabeformat</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sta_tab_matlab_tab_auto_calc_button">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>60</y>
+          <width>201</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Automatisierte Berechnung durchführen</string>
+        </property>
+        <property name="text">
+         <string>Automatisierte Berechnung</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="sta_tab_elephant_tab">
+       <attribute name="title">
+        <string>Elephant</string>
+       </attribute>
+       <widget class="QComboBox" name="sta_tab_elephant_tab_feature_comboBox">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>20</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sta_tab_elephant_tab_feature_label">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature</string>
+        </property>
+        <property name="text">
+         <string>Feature:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sta_tab_elephant_tab_auto_calc_button">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>60</y>
+          <width>201</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Automatisierte Berechnung durchführen</string>
+        </property>
+        <property name="text">
+         <string>Automatisierte Berechnung</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sta_tab_elephant_tab_feature_calc_button">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>60</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature berechnen</string>
+        </property>
+        <property name="text">
+         <string>Berechnen</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="sta_tab_elephant_tab_auto_calc_comboBox">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>20</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Ausgabeformat</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sta_tab_elephant_tab_auto_calc_label">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Ausgabeformat</string>
+        </property>
+        <property name="text">
+         <string>Ausgabeformat:</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="p_tab">
+     <attribute name="title">
+      <string>Plot</string>
+     </attribute>
+     <widget class="QPushButton" name="p_tab_plot_ST_button">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>131</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Spike Trains plotten</string>
+      </property>
+      <property name="text">
+       <string>Plotte Spike Trains</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="p_tab_plot_feature_button">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>60</y>
+        <width>131</width>
+        <height>71</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Feature Plotten</string>
+      </property>
+      <property name="text">
+       <string>Plotte Feature</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="p_tab_plot_feature_label">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>20</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Feature</string>
+      </property>
+      <property name="text">
+       <string>Feature:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="p_tab_plot_feature_comboBox">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>20</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="statusTip">
+       <string>Feature wählen</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QTextBrowser" name="MainTextBrowser">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>30</y>
+      <width>411</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="statusTip">
+     <string>Ausgabe Feld</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="plot_frame">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>1101</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="statusTip">
+     <string>Plot Feld</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1116</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

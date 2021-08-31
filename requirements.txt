@@ -1,0 +1,11 @@
+#  cd "/home/broxy/FAUbox/Uni/Master/Semester_2/PyCharm/Python_MatLab_Bridge"
+# pip install -r requirements.txt
+
+numpy
+scipy
+elephant
+matplotlib
+h5py
+neo
+quantities
+pyqt5
