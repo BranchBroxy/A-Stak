@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Libraries.Import import get_filepath, import_data
 from Libraries.MatLabEngine import matlab_feautre_list,  matlab_calc_all_feature, matlab_calc_feature
 from Libraries.ElephantEngine import elephant_feauture_list, elephant_calc_all_feature, elephant_calc_feature
-from Libraries.GUI_handler import get_matlab_path, get_drcell_path, install_libraries_and_unlock_tabs, initial_start
+from Libraries.GUI_handler import get_matlab_path, get_drcell_path, install_libraries_and_unlock_tabs, initial_start, check_drcell_matlab_flag
 from functools import partial
 
 
@@ -196,6 +196,7 @@ class Ui_MainWindow(object):
         self.v_tab_DrCellPath_browse_button.clicked.connect(partial(get_drcell_path, ui=ui))
         self.v_tab_MatLabPath_browse_button.clicked.connect(partial(get_matlab_path, ui=ui))
         self.v_tab_libraries_button.clicked.connect(partial(install_libraries_and_unlock_tabs, ui=ui))
+        self.d_tab_data_import_button.clicked.connect(partial(check_drcell_matlab_flag, ui=ui))
 
 
 
@@ -269,6 +270,8 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    # MyPart
     initial_start(ui)
+    # End of MyPart
     MainWindow.show()
     sys.exit(app.exec_())

@@ -109,6 +109,7 @@ def import_data(self):
         print("Sorry Datei kann nicht geöffnet werden :(")
 
 
+
 class ReadBxr:
     def __init__(self, path):
         self.data = h5py.File(path, 'r')
