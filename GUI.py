@@ -181,22 +181,22 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         # My Part
-        self.d_tab_browse_frame_button.clicked.connect(partial(get_filepath, ui = ui))
-        self.d_tab_data_import_button.clicked.connect(import_data)
+        self.d_tab_browse_frame_button.clicked.connect(partial(get_filepath, ui = ui))  # Auswahl des Pfads von .bxr und .mat files
+        self.d_tab_data_import_button.clicked.connect(import_data)  # Laden der Datei des Pfades
 
-        self.sta_tab_matlab_tab_feature_calc_button.clicked.connect(partial(matlab_calc_feature, ui=ui))
-        self.sta_tab_matlab_tab_auto_calc_button.clicked.connect(partial(matlab_calc_all_feature, ui=ui))
+        self.sta_tab_matlab_tab_feature_calc_button.clicked.connect(partial(matlab_calc_feature, ui=ui)) # Berechnung des ausgewählten MatLab Features (combobox)
+        self.sta_tab_matlab_tab_auto_calc_button.clicked.connect(partial(matlab_calc_all_feature, ui=ui))   # Berechnung aller MatLab Feature
 
-        self.sta_tab_elephant_tab_feature_calc_button.clicked.connect(partial(elephant_calc_feature, ui=ui))
-        self.sta_tab_elephant_tab_auto_calc_button.clicked.connect(partial(elephant_calc_all_feature, ui=ui))
+        self.sta_tab_elephant_tab_feature_calc_button.clicked.connect(partial(elephant_calc_feature, ui=ui))    # Berechnung des ausgewählten Elephant Features (combobox)
+        self.sta_tab_elephant_tab_auto_calc_button.clicked.connect(partial(elephant_calc_all_feature, ui=ui))   # Berechnung aller Elephant Feature
 
-        self.sta_tab_matlab_tab_feature_comboBox.addItems(matlab_feautre_list)
-        self.sta_tab_elephant_tab_feature_comboBox.addItems(elephant_feauture_list)
+        self.sta_tab_matlab_tab_feature_comboBox.addItems(matlab_feautre_list)     # comboboxinhalt in matlab_tab
+        self.sta_tab_elephant_tab_feature_comboBox.addItems(elephant_feauture_list) # comboboxinhalt in elephant_tab
 
-        self.v_tab_DrCellPath_browse_button.clicked.connect(partial(get_drcell_path, ui=ui))
-        self.v_tab_MatLabPath_browse_button.clicked.connect(partial(get_matlab_path, ui=ui))
-        self.v_tab_libraries_button.clicked.connect(partial(install_libraries_and_unlock_tabs, ui=ui))
-        self.d_tab_data_import_button.clicked.connect(partial(check_drcell_matlab_flag, ui=ui))
+        self.v_tab_DrCellPath_browse_button.clicked.connect(partial(get_drcell_path, ui=ui))    # v_tab: Methode um DrCell Path auswählen zu können
+        self.v_tab_MatLabPath_browse_button.clicked.connect(partial(get_matlab_path, ui=ui))    # v_tab: Methode um MatLab Path auswählen zu können
+        self.v_tab_libraries_button.clicked.connect(partial(install_libraries_and_unlock_tabs, ui=ui))  # Einbinden der Pfade und installieren aller benötigten Libs
+        self.d_tab_data_import_button.clicked.connect(partial(check_drcell_matlab_flag, ui=ui)) # Überprüfung ob DrCell und MatLab Pfad gesetzt wurden -> enable MatLab_tab
 
 
 
@@ -271,7 +271,7 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     # MyPart
-    initial_start(ui)
+    initial_start(ui)   # Funktion die beim Start aufgerufen wird, Disablen der Analyse und Plot Tabs
     # End of MyPart
     MainWindow.show()
     sys.exit(app.exec_())
