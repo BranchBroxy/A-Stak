@@ -14,6 +14,7 @@ def initial_start(ui):
     main_ui.sta_tab_matlab_tab.setEnabled(False)
     main_ui.sta_tab_elephant_tab.setEnabled(False)
     main_ui.p_tab.setEnabled(False)
+    main_ui.d_tab_plot_button.setEnabled(False)
 
 
 def get_drcell_path(ui):
@@ -50,6 +51,7 @@ def check_drcell_matlab_flag(ui):
     global main_ui
     main_ui = ui
     main_ui.p_tab.setEnabled(True)
+    main_ui.d_tab_plot_button.setEnabled(True)
     main_ui.sta_tab_elephant_tab.setEnabled(True)
     global drcell_matlab_flag
     if drcell_matlab_flag == True:
