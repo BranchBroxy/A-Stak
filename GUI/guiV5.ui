@@ -34,7 +34,7 @@
      <string/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="v_tab">
      <attribute name="title">
@@ -246,7 +246,7 @@
        <string>Spike Train Analyse Tab</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="sta_tab_matlab_tab">
        <attribute name="title">
@@ -435,6 +435,101 @@
         </property>
         <property name="text">
          <string>Ausgabeformat:</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="sta_tab_astak_tab">
+       <attribute name="title">
+        <string>A-Stak</string>
+       </attribute>
+       <widget class="QPushButton" name="sta_tab_astak_tab_feature_calc_button">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>60</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature berechnen</string>
+        </property>
+        <property name="text">
+         <string>Berechnen</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="sta_tab_astak_tab_auto_calc_button">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>60</y>
+          <width>201</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Automatisierte Berechnung durchführen</string>
+        </property>
+        <property name="text">
+         <string>Automatisierte Berechnung</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sta_tab_astak_tab_auto_calc_label">
+        <property name="geometry">
+         <rect>
+          <x>330</x>
+          <y>20</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Ausgabeformat</string>
+        </property>
+        <property name="text">
+         <string>Ausgabeformat:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="sta_tab_astak_tab_feature_comboBox">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>20</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="sta_tab_astak_tab_feature_label">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Feature</string>
+        </property>
+        <property name="text">
+         <string>Feature:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="sta_tab_astak_tab_auto_calc_comboBox">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>20</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="statusTip">
+         <string>Ausgabeformat</string>
         </property>
        </widget>
       </widget>

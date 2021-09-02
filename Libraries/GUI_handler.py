@@ -1,5 +1,6 @@
 import os
 from PyQt5.QtWidgets import QFileDialog
+from Libraries.Plotter import plotter_init
 
 main_ui = object
 drcell_path = ""
@@ -7,7 +8,7 @@ matlab_path = ""
 drcell_matlab_flag = False
 
 
-def initial_start(ui):
+def initial_start(ui, MainWindow):
     global main_ui
     main_ui = ui
     main_ui.d_tab.setEnabled(True)
@@ -15,6 +16,7 @@ def initial_start(ui):
     main_ui.sta_tab_elephant_tab.setEnabled(False)
     main_ui.p_tab.setEnabled(False)
     main_ui.d_tab_plot_button.setEnabled(False)
+    plotter_init(main_ui, MainWindow)
 
 
 def get_drcell_path(ui):
