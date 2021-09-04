@@ -169,17 +169,19 @@ for i in range(0, anzahl_elektroden):
 ##########################
 print("Fast Cross-Correlation")
 ran = np.array([range(1 - np.max(neg_wins) - np.max(co_wins), np.max(neg_wins) + d+1)])
-CM=np.zeros(shape=(int(ran.shape[1]),NrC,NrC))
+CM=np.zeros(shape=(NrC, int(ran.shape[1]), NrC))
 ind = np.max(neg_wins) + np.max(co_wins)
 if ind <= -1:
     ind=0
 # for python:
-
-for i in range(0, d+np.max(neg_wins)):
+ind = ind - 1
+for i in range(0, d+np.max(neg_wins)+1):
     # CM[ind, :, :] =(np.transpose(mat[1+i:mat.shape[0], :]) * mat[1:mat.shape[0]-i, :]) / ((np.transpose(r)*r)/NrS)
     # CM[ind, :, :] = (np.dot(np.transpose(mat[1 + i:mat.shape[0], :]), mat[1:mat.shape[0] - i, :])) / ((np.dot(np.transpose(r), r)) / NrS)
     # CM[ind, :, :] = (np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])) / (np.dot(np.transpose(r), r)) / NrS
-    CM[ind, :, :] = np.divide((np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])), (np.dot(np.transpose(r), r)) )/ NrS
+    CMbuffer = np.divide((np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])),(np.dot(np.transpose(r), r))) / NrS
+    CM[:, ind, :] = CMbuffer[0]
+    # np.divide((np.dot(np.transpose(mat[0:mat.shape[0], :]), mat[0:mat.shape[0] - 0, :])), (np.dot(np.transpose(r), r)) )/ NrS
     # CM(ind,:,:)=(u_0(1+i:end,:)'*u_0(1:end-i,:))./(r'*r)/NrS;
     # takes longer, no performance impact
     ind = ind + 1
@@ -191,13 +193,17 @@ helping = np.max(neg_wins)+np.max(co_wins)
 helper = np.arange(helping)
 helper = helper[helping:0:-1]
 helper = np.append(helper, 0)
+# @TODO hier STOP!
+# @TODO hier STOP!
 if(np.max(neg_wins)+np.max(co_wins) > 0):
     bufCM = np.zeros(shape=(NrC,NrC))
-    ind = 0
+    ind = -1
     for j in helper:
-        bufCM[:] = CM[np.max(neg_wins) + np.max(co_wins) + j, :, :]
-        CM[ind, :, :] = np.transpose(bufCM)
+        # bufCM = CM[:, np.max(neg_wins) + np.max(co_wins) + j-1, :]
+        bufCM = CMbuffer
         ind = ind + 1
+        CM[:, ind, :] = np.transpose(bufCM)
+
 print("stop")
 # Additional scaling for reduction of network burst impacts:
 # not finished!!!!!
