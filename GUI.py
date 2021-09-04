@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Libraries.Import import get_filepath, import_data
 from Libraries.MatLabEngine import matlab_feautre_list,  matlab_calc_all_feature, matlab_calc_feature
 from Libraries.ElephantEngine import elephant_feauture_list, elephant_calc_all_feature, elephant_calc_feature
-from Libraries.GUI_handler import get_matlab_path, get_drcell_path, install_libraries_and_unlock_tabs, initial_start, check_drcell_matlab_flag
+from Libraries.GUI_handler import get_matlab_path, get_drcell_path, install_libraries_and_unlock_tabs, initial_start, check_drcell_matlab_flag_enable_astak_elephant
 from Libraries.Plotter import plotter
 from functools import partial
 
@@ -225,7 +225,7 @@ class Ui_MainWindow(object):
             partial(get_matlab_path, ui=ui))  # v_tab: Methode um MatLab Path auswählen zu können
         self.v_tab_libraries_button.clicked.connect(partial(install_libraries_and_unlock_tabs,
                                                             ui=ui))  # Einbinden der Pfade und installieren aller benötigten Libs
-        self.d_tab_data_import_button.clicked.connect(partial(check_drcell_matlab_flag,
+        self.d_tab_data_import_button.clicked.connect(partial(check_drcell_matlab_flag_enable_astak_elephant,
                                                               ui=ui))  # Überprüfung ob DrCell und MatLab Pfad gesetzt wurden -> enable MatLab_tab
 
         self.d_tab_plot_button.clicked.connect(partial(plotter, ui=ui, MainWindow=MainWindow))

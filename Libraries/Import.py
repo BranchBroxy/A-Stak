@@ -38,7 +38,7 @@ def get_filepath(ui):
     name, extension = os.path.splitext(filepath)
 
 
-def import_bxr(self):
+def import_bxr():
     global main_ui
     global filepath
     ui = main_ui
@@ -58,7 +58,7 @@ def import_bxr(self):
     ui.MainTextBrowser.setText("Bxr Datei erfolgreich importiert")
 
 
-def import_mat(self):
+def import_mat():
     global main_ui
     global filepath
 
@@ -97,12 +97,12 @@ def import_mat(self):
 
 
 
-def import_data(self):
+def import_data():
     global extension
     if extension == ".bxr":
-        import_bxr(self)
+        import_bxr()
     elif extension == ".mat":
-        import_mat(self)
+        import_mat()
     elif extension == ".py":
         print("It's a .py")
     else:

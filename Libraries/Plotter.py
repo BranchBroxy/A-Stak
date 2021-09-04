@@ -19,7 +19,9 @@ def plotter(ui, MainWindow):
     main_ui = ui
     sc = MplCanvas(main_ui, width=5, height=4, dpi=100)
     main_ui.plot = QtWidgets.QVBoxLayout(main_ui.plot_frame)
-    toolbar = NavigationToolbar(sc, MainWindow)
+    toolbar = NavigationToolbar(sc,MainWindow)
+    # main_ui.plot.removeWidget(toolbar)
+    # main_ui.plot.removeWidget(sc)
     main_ui.plot.addWidget(toolbar)
     main_ui.plot.addWidget(sc)
 
@@ -28,6 +30,7 @@ def plotter(ui, MainWindow):
 class MplCanvas(FigureCanvasQTAgg):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         # @TODO Plot Klasse aufräumen
+        # @TODO Plots updatbar machen, um neue Plots generieren zu können
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         np.random.seed(789680)
@@ -38,6 +41,7 @@ class MplCanvas(FigureCanvasQTAgg):
         global SaRa
         spike_list, amp, rec_dur, SaRa = get_variables()
         datas = spike_list
+        longest = datas.max()
         # datas = np.where(np.invert(0 == datas), datas, float("nan"))
         datas = np.where(np.invert(0 == datas), datas, np.nan)
         colors1 = ['C{}'.format(i) for i in range(6)]
@@ -50,8 +54,8 @@ class MplCanvas(FigureCanvasQTAgg):
 
         # axs.eventplot(data1, colors=colors1, lineoffsets=lineoffsets1, linelengths=linelengths1)
         # @TODO Achsen anpassbar machen
-        axs.eventplot(datas)
-        axs.axis([0, datas.shape[0], 0, 60])
+        axs.eventplot(datas, color = "black")
+        axs.axis([0, longest + 0.05*longest, 0, datas.shape[0]])
         axs.set_title('Spike Train Plot')
         super(MplCanvas, self).__init__(fig)
 
@@ -65,7 +69,7 @@ class MplCanvas(FigureCanvasQTAgg):
 def plotter_init(ui, MainWindow):
     global main_ui
     main_ui = ui
-    sc = MplCanvas(main_ui, width=5, height=4, dpi=100)
+    sc = MplCanvas_init(main_ui, width=5, height=4, dpi=100)
     main_ui.plot = QtWidgets.QVBoxLayout(main_ui.plot_frame)
     toolbar = NavigationToolbar(sc, MainWindow)
     main_ui.plot.addWidget(toolbar)
@@ -73,8 +77,13 @@ def plotter_init(ui, MainWindow):
 
 
 
-class MplCanvas(FigureCanvasQTAgg):
+class MplCanvas_init(FigureCanvasQTAgg):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
+        # @TODO Plot Klasse aufräumen
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
         fig, axs = plt.subplots()
-        axs.set_title('Spike Train Plot')
-        super(MplCanvas, self).__init__(fig)
+        axs.eventplot([[0,0]])
+        axs.axis([0, 60, 0, 60])
+        axs.set_title('Plot')
+        super(MplCanvas_init, self).__init__(fig)

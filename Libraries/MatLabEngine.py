@@ -68,12 +68,33 @@ def matlab_all_feature(TS, AMP, rec_dur, SaRa, Selection, time_win, FR_min, N=0,
     path = "/media/broxy/38DA-A148/FauBox/Uni/Master/PyCharm/Astak_V1/DrCell"
     # rec_dur = matlab.double(rec_dur)
     values = []
+    path_manuell = '/media/broxy/38DA-A148/FauBox/Uni/Master/PyCharm/Astak_V1/DrCell'
+    path_manuell_python = path_manuell + '/shared/Engines/Python'
     eng = matlab.engine.start_matlab()  # MatLab Umgebung aufrufen
+    eng.cd(path_manuell_python)  # nach Spike-Contrast navigieren
+    eng.get_path(path_manuell, nargout=0)
     eng.cd(path)  # nach Spike-Contrast navigieren
-    values = eng.adapter(TS, AMP, float(rec_dur), float(SaRa), Selection, float(time_win), float(FR_min), float(0), float(0))
+    values = eng.CalcFeatures_call(TS, AMP, float(rec_dur), float(SaRa), Selection, float(time_win), float(FR_min), float(0), float(0))
     eng.quit()
     return values
     # eng.adapter(TS, AMP, rec_dur, SaRa, Selection, time_win, FR_min, N, binSize)
+
+def matlab_first_call():
+    # @TODO MatLab first_call nutzen, sobald eng.quit() ausgeführt wird ist auch der Pfad weg -> Lösung finden
+    path = os.getcwd()
+    path = os.path.dirname(os.path.dirname(path))
+    path = path + "/DrCell"
+    path_manuell = '/media/broxy/38DA-A148/FauBox/Uni/Master/PyCharm/Astak_V1/DrCell'
+    path_manuell_python = path_manuell + '/shared/Engines/Python'
+
+    print(path_manuell)
+    print(path_manuell_python)
+    eng = matlab.engine.start_matlab()  # MatLab Umgebung aufrufen
+    # path_manuell = matlab.char(path_manuell)
+    eng.cd(path_manuell_python)  # nach Spike-Contrast navigieren
+    eng.get_path(path_manuell, nargout=0)
+    eng.quit()
+
 
 matlab_feautre_list = ['Spikerate',
 'Number of spikes',
