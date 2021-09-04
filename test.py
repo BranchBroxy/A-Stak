@@ -174,22 +174,30 @@ ind = np.max(neg_wins) + np.max(co_wins)
 if ind <= -1:
     ind=0
 # for python:
-ind =-1
-for i in range(0, np.max(neg_wins)):
+
+for i in range(0, d+np.max(neg_wins)):
     # CM[ind, :, :] =(np.transpose(mat[1+i:mat.shape[0], :]) * mat[1:mat.shape[0]-i, :]) / ((np.transpose(r)*r)/NrS)
-    CM[ind, :, :] = (np.dot(np.transpose(mat[1 + i:mat.shape[0], :]), mat[1:mat.shape[0] - i, :])) / ((np.dot(np.transpose(r), r)) / NrS)
+    # CM[ind, :, :] = (np.dot(np.transpose(mat[1 + i:mat.shape[0], :]), mat[1:mat.shape[0] - i, :])) / ((np.dot(np.transpose(r), r)) / NrS)
+    # CM[ind, :, :] = (np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])) / (np.dot(np.transpose(r), r)) / NrS
+    CM[ind, :, :] = np.divide((np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])), (np.dot(np.transpose(r), r)) )/ NrS
     # CM(ind,:,:)=(u_0(1+i:end,:)'*u_0(1:end-i,:))./(r'*r)/NrS;
     # takes longer, no performance impact
     ind = ind + 1
 
 # Usage of symmetric construction of cross correlation for faster calculation:
+# helping = np.max(neg_wins)+np.max(co_wins)-1
+# @TODO potenzieller Bug!!, weil 0 harcodede in helper
+helping = np.max(neg_wins)+np.max(co_wins)
+helper = np.arange(helping)
+helper = helper[helping:0:-1]
+helper = np.append(helper, 0)
 if(np.max(neg_wins)+np.max(co_wins) > 0):
-    bufCM = np.zeros(NrC)
+    bufCM = np.zeros(shape=(NrC,NrC))
     ind = 0
-    for j in range(np.max(neg_wins)+np.max(co_wins)-1, 1):
+    for j in helper:
         bufCM[:] = CM[np.max(neg_wins) + np.max(co_wins) + j, :, :]
-        ind = ind + 1
         CM[ind, :, :] = np.transpose(bufCM)
+        ind = ind + 1
 print("stop")
 # Additional scaling for reduction of network burst impacts:
 # not finished!!!!!
