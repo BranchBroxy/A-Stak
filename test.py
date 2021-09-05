@@ -271,19 +271,29 @@ for win_before in neg_wins:
         win_inner[0, in_]=win_in
 wnew_windows = [[] for temp_in_ in range(temp_in_)]
 var1 = []
-for runner in range(0, len(windows)):
-    indi = 0
-    for runner_1 in range(0, len(windows[runner])):
 
-        var = windows[runner][runner_1][0].tolist()
-        wnew_windows[runner].append(var)
+#for runner in range(0, len(windows)):
+    #indi = 0
+    #for runner_1 in range(0, len(windows[runner])):
+
+        #var = windows[runner][runner_1][0].tolist()
+        #wnew_windows[runner].append(var)
         # wnew_windows[runner].append(windows[runner][runner_1+1][0].tolist())
 
-    indi = indi + 1
+    #indi = indi + 1
         # wnew_windows[runner].append(windows[runner][runner_1][0].tolist())
     # wnew_windows[runner] = np.append(wnew_windows, windows[runner][1]).tolist()
     # wnew_windows[runner] = np.append(wnew_windows, windows[runner][2])
 
+for runner in range(0, len(windows)):
+    for u in range(len(windows[runner])):
+        for t in range(len(windows[runner][u])):
+            for r in range(len(windows[runner][u][t])):
+                wnew_windows[runner].append(float(windows[runner][u][t][r]))
+            # print(t)
+        # windows[runner][u][0]
+        #print(u)
+m = d + np.max(neg_wins) + np.max(co_wins) + np.max(pos_wins)
 #########################
 # Usage of edge filters #
 #########################
@@ -292,6 +302,24 @@ from scipy import signal
 # f = signal.fftconvolve(x, y)
 # CM(np.isnan(CM))=0
 np.nan_to_num(x=CM,copy=False, nan = 0) # if CM contains many NaNs, only NaNs remains after convolution. e.g. for very short spike trains
+
+CM2 = np.zeros(shape=(NrC, in_, NrC))
+for page in range(0, NrC):
+    for j in range(0, in_):
+        # CM3 = signal.fftconvolve(CM[:, int(beginnings[0][j])-1:CM.shape[0] , :], wnew_windows[j], 'valid')
+        CM1 = signal.fftconvolve(CM[page, int(beginnings[0][j]) - 1:CM.shape[0], j], wnew_windows[j], 'valid')
+        CM1 = np.around(CM1, decimals=5)
+
+        for lol in range(0, len(CM1)):
+
+            CM2[page][lol][j] = CM1[lol]
+
+        CM0 = np.ones(shape=(int(win_inner[0][j]) - 1, 1))
+    CM3 = signal.fftconvolve(CM2, CM0, 'full')
+
 for j in range(0, in_):
-    CM3 = signal.fftconvolve(CM[beginnings[0][j]:CM.shape[0], :, :], windows[j], 'valid')
+    CM0 = np.ones(shape=(int(win_inner[0][j]) - 1, 1))
+    CM3 = signal.fftconvolve(CM2, CM0, 'full')
+
+
 print("sucsess!")
