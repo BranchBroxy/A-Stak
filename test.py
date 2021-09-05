@@ -175,12 +175,16 @@ if ind <= -1:
     ind=0
 # for python:
 ind = ind - 1
+counter = 0
 for i in range(0, d+np.max(neg_wins)+1):
+
     # CM[ind, :, :] =(np.transpose(mat[1+i:mat.shape[0], :]) * mat[1:mat.shape[0]-i, :]) / ((np.transpose(r)*r)/NrS)
     # CM[ind, :, :] = (np.dot(np.transpose(mat[1 + i:mat.shape[0], :]), mat[1:mat.shape[0] - i, :])) / ((np.dot(np.transpose(r), r)) / NrS)
     # CM[ind, :, :] = (np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])) / (np.dot(np.transpose(r), r)) / NrS
     CMbuffer = np.divide((np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])),(np.dot(np.transpose(r), r))) / NrS
-    CM[:, ind, :] = CMbuffer[0]
+    for counter_1 in range(0, NrC):
+        CM[counter_1, ind, :] = CMbuffer[counter_1]
+    #counter = counter + 1
     # np.divide((np.dot(np.transpose(mat[0:mat.shape[0], :]), mat[0:mat.shape[0] - 0, :])), (np.dot(np.transpose(r), r)) )/ NrS
     # CM(ind,:,:)=(u_0(1+i:end,:)'*u_0(1:end-i,:))./(r'*r)/NrS;
     # takes longer, no performance impact
@@ -199,10 +203,12 @@ if(np.max(neg_wins)+np.max(co_wins) > 0):
     bufCM = np.zeros(shape=(NrC,NrC))
     ind = -1
     for j in helper:
-        # bufCM = CM[:, np.max(neg_wins) + np.max(co_wins) + j-1, :]
-        bufCM = CMbuffer
+        bufCM = CM[:, np.max(neg_wins) + np.max(co_wins) + j-1, :]
+        # bufCM = CMbuffer
         ind = ind + 1
-        CM[:, ind, :] = np.transpose(bufCM)
+        for counter_1 in range(0, NrC):
+            # CM[counter_1, ind, :] = CMbuffer[counter_1]
+            CM[counter_1, ind, :] = np.transpose(bufCM[counter_1])
 
 print("stop")
 # Additional scaling for reduction of network burst impacts:
@@ -254,7 +260,7 @@ for win_before in neg_wins:
         win_p2 = win_p1
         win_after=win_before
         windows[in_].append([-1*np.ones(shape=(win_before, 1)) / win_before])
-        if win_p1 != 0: # @TODO: potenzieller B
+        if win_p1 != 0: # @TODO: potenzieller Bug
             windows[in_].append([1*np.zeros(shape=(win_p1, 1))])
         windows[in_].append([2/win_in * np.ones(shape=(win_in, 1))])
         if win_p2 != 0: # @TODO: potenzieller Bug
