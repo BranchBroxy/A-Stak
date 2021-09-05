@@ -269,7 +269,29 @@ for win_before in neg_wins:
         # windows[in_]=-1*np.ones(win_before,1) /win_before; np.zeros(win_p1,1);2/win_in* np.ones(win_in,1);np.zeros(win_p2,1);-1*np.ones(win_after,1)/win_after
         beginnings[0, in_]=int(1+WB-win_before-win_p1)
         win_inner[0, in_]=win_in
+wnew_windows = [[] for temp_in_ in range(temp_in_)]
+var1 = []
+for runner in range(0, len(windows)):
+    indi = 0
+    for runner_1 in range(0, len(windows[runner])):
 
+        var = windows[runner][runner_1][0].tolist()
+        wnew_windows[runner].append(var)
+        # wnew_windows[runner].append(windows[runner][runner_1+1][0].tolist())
+
+    indi = indi + 1
+        # wnew_windows[runner].append(windows[runner][runner_1][0].tolist())
+    # wnew_windows[runner] = np.append(wnew_windows, windows[runner][1]).tolist()
+    # wnew_windows[runner] = np.append(wnew_windows, windows[runner][2])
+
+#########################
+# Usage of edge filters #
+#########################
+# Matlab end -> .shape[0] python
+from scipy import signal
+# f = signal.fftconvolve(x, y)
 # CM(np.isnan(CM))=0
-
+np.nan_to_num(x=CM,copy=False, nan = 0) # if CM contains many NaNs, only NaNs remains after convolution. e.g. for very short spike trains
+for j in range(0, in_):
+    CM3 = signal.fftconvolve(CM[beginnings[0][j]:CM.shape[0], :, :], windows[j], 'valid')
 print("sucsess!")
