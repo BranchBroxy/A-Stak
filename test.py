@@ -297,13 +297,14 @@ m = d + np.max(neg_wins) + np.max(co_wins) + np.max(pos_wins)
 #########################
 # Usage of edge filters #
 #########################
+print("Usage of edge filters")
 # Matlab end -> .shape[0] python
 from scipy import signal
 # f = signal.fftconvolve(x, y)
 # CM(np.isnan(CM))=0
 np.nan_to_num(x=CM,copy=False, nan = 0) # if CM contains many NaNs, only NaNs remains after convolution. e.g. for very short spike trains
 
-CM2 = np.zeros(shape=(NrC, in_, NrC))
+"""CM2 = np.zeros(shape=(NrC, in_, NrC))
 for page in range(0, NrC):
     for j in range(0, in_):
         # CM3 = signal.fftconvolve(CM[:, int(beginnings[0][j])-1:CM.shape[0] , :], wnew_windows[j], 'valid')
@@ -319,7 +320,19 @@ for page in range(0, NrC):
 
 for j in range(0, in_):
     CM0 = np.ones(shape=(int(win_inner[0][j]) - 1, 1))
-    CM3 = signal.fftconvolve(CM2, CM0, 'full')
+    CM3 = signal.fftconvolve(CM2, CM0, 'full')"""
+conv_flag = True
+for j in range(0, in_):
+    for page in range(0, CM.shape[0]):
+        for reihe in range(0, CM.shape[0]):
+            z1 = signal.fftconvolve(CM[page, int(beginnings[0][j]) - 1:CM.shape[0], reihe], wnew_windows[j], 'valid')
+            z1 = np.around(z1, decimals=5)
+            if conv_flag:
+                conv_shape = z1.shape[0]
+                z1_array = np.zeros(shape=(CM.shape[0], conv_shape, CM.shape[0]))
+                conv_flag = False
+            z1_array[page,:,reihe] = z1
 
+    # z2 = np.ones(shape=(int(win_inner[0][j]) - 1, 1))
 
 print("sucsess!")
