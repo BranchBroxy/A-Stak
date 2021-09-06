@@ -196,9 +196,11 @@ if FLAG_NORM:
 ##############################
 print("Generation of edge filters")
 WB=np.max(neg_wins)+np.max(co_wins)
-sumWin=np.zeros(shape=(d+WB,NrC,NrC))
+# sumWin=np.zeros(shape=(d+WB, NrC, NrC))
+sumWin=np.zeros(shape=(NrC, d+WB, NrC))
 in_=-1
 temp_in_=30
+# @TODO: win_inner- und beginnigsgröße nicht hardcoden
 win_inner = np.zeros(shape=(1, 30))
 beginnings = np.zeros(shape=(1, 30))
 windows = []
@@ -242,23 +244,37 @@ from scipy import signal
 np.nan_to_num(x=CM,copy=False, nan = 0) # if CM contains many NaNs, only NaNs remains after convolution. e.g. for very short spike trains
 
 conv_flag = True
-z1buff = np.zeros(shape=(NrC, 29, NrC))
-CM4buff = np.zeros(shape=(NrC, 30, NrC))
+# @TODO buffer.arrays, Größe darf nicht gehard codet sein
+
+# z1buff = np.zeros(shape=(NrC, 29, NrC))
+# CM4buff = np.zeros(shape=(NrC, 30, NrC))
 for j in range(0, in_):
+    z1_flag = True
+    cm4_flag = True
     for page in range(0, NrC):
         for reihe in range(0, NrC):
             z1 = signal.fftconvolve(CM_matlab[page, int(beginnings[0][j]) - 1: CM_matlab.shape[1], reihe], wnew_windows[j], 'valid')
+            if z1_flag:
+                z1_flag = False
+                z1buff = np.zeros(shape=(NrC, z1.shape[0], NrC))
             # signal.fftconvolve(CM_matlab[0, 5:41, 2], wnew_windows[j], 'valid')
-            z1buff[page, :, reihe]= z1
+            z1buff[page, :, reihe] = z1
     z1 = z1buff
     z1 = np.around(z1, decimals=4)
     z2 = np.ones(shape=(int(win_inner[0][j]), 1))
     for page in range(0, NrC):
         for reihe in range(0, NrC):
             CM4 = signal.fftconvolve(z1[page, :, reihe] , z2[:,0], 'full')
-            CM4buff[page, :, reihe]= CM4
+            if cm4_flag:
+                cm4_flag = False
+                CM4buff = np.zeros(shape=(NrC, CM4.shape[0], NrC))
+            CM4buff[page, :, reihe] = CM4
 
     CM4 = CM4buff
-    m = np.min(m, CM4[:, 1, 1].shape[0])
+    m = np.min([m, CM4[1, :, 1].shape[0]])
+    # @TODO: für was diese Zeile?: sumWin[0:CM4.shape[1],:,:]=CM4+sumWin[1:CM4.shape[1],:,:]
+    sumWin[:, 0:CM4.shape[1], :] = CM4+sumWin[:, 0:CM4.shape[1], :]
 
+
+sumWin=sumWin[0:m,:,:]
 print("sucsess!")
