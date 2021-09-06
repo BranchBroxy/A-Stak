@@ -248,7 +248,7 @@ conv_flag = True
 
 # z1buff = np.zeros(shape=(NrC, 29, NrC))
 # CM4buff = np.zeros(shape=(NrC, 30, NrC))
-for j in range(0, in_):
+for j in range(0, in_+1):
     z1_flag = True
     cm4_flag = True
     for page in range(0, NrC):
