@@ -94,8 +94,6 @@ for y in range(0, anzahl_elektroden):
             pass
         index = index + 1
 
-# sdf_new_trimzeros = sdf_new
-
 spikes1 = []
 spikes2 = []
 for a in range(0, anzahl_elektroden):
@@ -107,45 +105,27 @@ vec1= np.array(spikes1, dtype=object)
 vec2= np.array(spikes2, dtype=object)
 
 
-"""vec1 = np.zeros(shape=(1,all))
-# vec2 = np.zeros(shape=(1,sdf.shape[0]*sdf.shape[1]))
-# vec2 = np.array()
-# temp = np.ones((5,), dtype=int)
-# @TODO Nullen raus?
-vec1 = np.reshape(sdf_new, newshape=(1, all))
-temp0 = np.zeros((anzahl_einträge,), dtype=int)
-temp = np.ones((anzahl_einträge,), dtype=int)
-for app in range(0, anzahl_elektroden):
-    if app == 0:
-        vec2 = temp0
-    elif app == 1:
-        vec2 = np.append(vec2, temp)
-    else:
-        temp = temp + 1
-        vec2 = np.append(vec2, temp)
-vec2 = np.reshape(vec2, newshape=(1, all))
-vec1[np.abs(vec1)< .1]= 0 # some zeros
-vec1 = np.ma.masked_equal(vec1,0)"""
+vec1 = [1,1.1,2,3,4,4.9,0.5,0.6,1,4,4.9,1,2,3,4,4.5]
+
+vec2 = [0,0,0,0,0,0,1,1,1,1,1,2,2,2,2,2]
+vec1= np.array(vec1, dtype=object)
+vec1 = vec1 * 1000
+vec2= np.array(vec2, dtype=object)
+NrC = 3
+NrS = 5000
+anzahl_elektroden = NrC
+rec_dur_in_ms = NrS
+
 np.max(sdf) # 59598
-mat = np.zeros(shape=(rec_dur_in_ms, anzahl_elektroden))
+mat = np.zeros(shape=(NrS, NrC))
 n_spikes = 0
 n_spikes_einer_elektrode = np.zeros(shape=(1, anzahl_elektroden))
-for x in range(0, len(vec1)):
-    # zahler = zahler + 1
-    for y in range(0, len(vec1[x])):
-        n_spikes_einer_elektrode[0][vec2[x][0]] = len(vec1[x])
-        n_spikes = n_spikes + 1
 
-
-for x in range(0, len(vec1)):
-    for y in range(0, len(vec1[x])):
-        mat[int(vec1[x][y])][int(vec2[x][y])] = 1
-
-"""for i in range(0, vec1.shape[1]):
-    if vec1[0,i] != 0: # vec1[0,i] same as vec2[0][i]
-        mat[int(vec2[0,i])][int(vec1[0,i])] = 1"""
+for i in range(0, vec1.shape[0]):
+    if vec1[i] != 0: # vec1[0,i] same as vec2[0][i]
+        mat[int(vec1[i])][int(vec2[i])] = 1
 mat_new = csr_matrix(mat)
-mat_zero = mat[0]
+
 
 ################################################
 # Calculation of std deviation and mean values #
@@ -169,25 +149,18 @@ for i in range(0, anzahl_elektroden):
 ##########################
 print("Fast Cross-Correlation")
 ran = np.array([range(1 - np.max(neg_wins) - np.max(co_wins), np.max(neg_wins) + d+1)])
-CM=np.zeros(shape=(NrC, int(ran.shape[1]), NrC))
+CM=np.zeros(shape=(int(ran.shape[1]), NrC, NrC))
+CM_matlab = np.zeros(shape=(NrC, int(ran.shape[1]), NrC))
 ind = np.max(neg_wins) + np.max(co_wins)
 if ind <= -1:
     ind=0
 # for python:
 ind = ind - 1
-counter = 0
 for i in range(0, d+np.max(neg_wins)+1):
-
-    # CM[ind, :, :] =(np.transpose(mat[1+i:mat.shape[0], :]) * mat[1:mat.shape[0]-i, :]) / ((np.transpose(r)*r)/NrS)
-    # CM[ind, :, :] = (np.dot(np.transpose(mat[1 + i:mat.shape[0], :]), mat[1:mat.shape[0] - i, :])) / ((np.dot(np.transpose(r), r)) / NrS)
-    # CM[ind, :, :] = (np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])) / (np.dot(np.transpose(r), r)) / NrS
-    CMbuffer = np.divide((np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])),(np.dot(np.transpose(r), r))) / NrS
+    CMbuffer = np.divide((np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])), (np.dot(np.transpose(r), r))) / NrS
+    CM[i] = CMbuffer
     for counter_1 in range(0, NrC):
-        CM[counter_1, ind, :] = CMbuffer[counter_1]
-    #counter = counter + 1
-    # np.divide((np.dot(np.transpose(mat[0:mat.shape[0], :]), mat[0:mat.shape[0] - 0, :])), (np.dot(np.transpose(r), r)) )/ NrS
-    # CM(ind,:,:)=(u_0(1+i:end,:)'*u_0(1:end-i,:))./(r'*r)/NrS;
-    # takes longer, no performance impact
+        CM_matlab[counter_1, ind, :] = CMbuffer[counter_1]
     ind = ind + 1
 
 # Usage of symmetric construction of cross correlation for faster calculation:
@@ -196,19 +169,17 @@ for i in range(0, d+np.max(neg_wins)+1):
 helping = np.max(neg_wins)+np.max(co_wins)
 helper = np.arange(helping)
 helper = helper[helping:0:-1]
-helper = np.append(helper, 0)
-# @TODO hier STOP!
-# @TODO hier STOP!
+helper = np.append(helper, 1)
+
+
 if(np.max(neg_wins)+np.max(co_wins) > 0):
-    bufCM = np.zeros(shape=(NrC,NrC))
-    ind = -1
+    bufCM = np.zeros(shape=(NrC, NrC))
+    ind = 0
     for j in helper:
-        bufCM = CM[:, np.max(neg_wins) + np.max(co_wins) + j-1, :]
+        bufCM = CM[np.max(neg_wins) + np.max(co_wins) + j-1, :, :]
         # bufCM = CMbuffer
+        CM[ind] = np.transpose(bufCM)
         ind = ind + 1
-        for counter_1 in range(0, NrC):
-            # CM[counter_1, ind, :] = CMbuffer[counter_1]
-            CM[counter_1, ind, :] = np.transpose(bufCM[counter_1])
 
 print("stop")
 # Additional scaling for reduction of network burst impacts:
@@ -232,25 +203,6 @@ win_inner = np.zeros(shape=(1, 30))
 beginnings = np.zeros(shape=(1, 30))
 windows = []
 windows = [[] for temp_in_ in range(temp_in_)]
-"""for win_before in neg_wins:
-    # for win_p1 in range(0, co_wins):
-    win_p1 = co_wins
-    for win_in in pos_wins:
-        in_=in_+1
-        win_p2 = win_p1
-        win_after=win_before
-        first_append = np.array([-1*np.ones(shape=(win_before, 1)) / win_before])
-        windows[in_].append(first_append.tolist)
-        # windows[in_].append([-1*np.ones(shape=(win_before, 1)) / win_before])
-        if win_p1 != 0: # @TODO: potenzieller B
-            windows[in_].append([1*np.zeros(shape=(win_p1, 1))])
-        windows[in_].append([2/win_in * np.ones(shape=(win_in, 1))])
-        if win_p2 != 0: # @TODO: potenzieller Bug
-            windows[in_].append([np.zeros(shape=(win_p2, 1))])
-        windows[in_].append([-1*np.ones(shape=(win_after, 1)) / win_after])
-        # windows[in_]=-1*np.ones(win_before,1) /win_before; np.zeros(win_p1,1);2/win_in* np.ones(win_in,1);np.zeros(win_p2,1);-1*np.ones(win_after,1)/win_after
-        beginnings[0, in_]=int(1+WB-win_before-win_p1)
-        win_inner[0, in_]=win_in"""
 
 for win_before in neg_wins:
     # for win_p1 in range(0, co_wins):
@@ -272,28 +224,13 @@ for win_before in neg_wins:
 wnew_windows = [[] for temp_in_ in range(temp_in_)]
 var1 = []
 
-#for runner in range(0, len(windows)):
-    #indi = 0
-    #for runner_1 in range(0, len(windows[runner])):
-
-        #var = windows[runner][runner_1][0].tolist()
-        #wnew_windows[runner].append(var)
-        # wnew_windows[runner].append(windows[runner][runner_1+1][0].tolist())
-
-    #indi = indi + 1
-        # wnew_windows[runner].append(windows[runner][runner_1][0].tolist())
-    # wnew_windows[runner] = np.append(wnew_windows, windows[runner][1]).tolist()
-    # wnew_windows[runner] = np.append(wnew_windows, windows[runner][2])
-
 for runner in range(0, len(windows)):
     for u in range(len(windows[runner])):
         for t in range(len(windows[runner][u])):
             for r in range(len(windows[runner][u][t])):
                 wnew_windows[runner].append(float(windows[runner][u][t][r]))
-            # print(t)
-        # windows[runner][u][0]
-        #print(u)
 m = d + np.max(neg_wins) + np.max(co_wins) + np.max(pos_wins)
+
 #########################
 # Usage of edge filters #
 #########################
@@ -304,35 +241,24 @@ from scipy import signal
 # CM(np.isnan(CM))=0
 np.nan_to_num(x=CM,copy=False, nan = 0) # if CM contains many NaNs, only NaNs remains after convolution. e.g. for very short spike trains
 
-"""CM2 = np.zeros(shape=(NrC, in_, NrC))
-for page in range(0, NrC):
-    for j in range(0, in_):
-        # CM3 = signal.fftconvolve(CM[:, int(beginnings[0][j])-1:CM.shape[0] , :], wnew_windows[j], 'valid')
-        CM1 = signal.fftconvolve(CM[page, int(beginnings[0][j]) - 1:CM.shape[0], j], wnew_windows[j], 'valid')
-        CM1 = np.around(CM1, decimals=5)
-
-        for lol in range(0, len(CM1)):
-
-            CM2[page][lol][j] = CM1[lol]
-
-        CM0 = np.ones(shape=(int(win_inner[0][j]) - 1, 1))
-    CM3 = signal.fftconvolve(CM2, CM0, 'full')
-
-for j in range(0, in_):
-    CM0 = np.ones(shape=(int(win_inner[0][j]) - 1, 1))
-    CM3 = signal.fftconvolve(CM2, CM0, 'full')"""
 conv_flag = True
+z1buff = np.zeros(shape=(NrC, 29, NrC))
+CM4buff = np.zeros(shape=(NrC, 30, NrC))
 for j in range(0, in_):
-    for page in range(0, CM.shape[0]):
-        for reihe in range(0, CM.shape[0]):
-            z1 = signal.fftconvolve(CM[page, int(beginnings[0][j]) - 1:CM.shape[0], reihe], wnew_windows[j], 'valid')
-            z1 = np.around(z1, decimals=5)
-            if conv_flag:
-                conv_shape = z1.shape[0]
-                z1_array = np.zeros(shape=(CM.shape[0], conv_shape, CM.shape[0]))
-                conv_flag = False
-            z1_array[page,:,reihe] = z1
+    for page in range(0, NrC):
+        for reihe in range(0, NrC):
+            z1 = signal.fftconvolve(CM_matlab[page, int(beginnings[0][j]) - 1: CM_matlab.shape[1], reihe], wnew_windows[j], 'valid')
+            # signal.fftconvolve(CM_matlab[0, 5:41, 2], wnew_windows[j], 'valid')
+            z1buff[page, :, reihe]= z1
+    z1 = z1buff
+    z1 = np.around(z1, decimals=4)
+    z2 = np.ones(shape=(int(win_inner[0][j]), 1))
+    for page in range(0, NrC):
+        for reihe in range(0, NrC):
+            CM4 = signal.fftconvolve(z1[page, :, reihe] , z2[:,0], 'full')
+            CM4buff[page, :, reihe]= CM4
 
-    # z2 = np.ones(shape=(int(win_inner[0][j]) - 1, 1))
+    CM4 = CM4buff
+    m = np.min(m, CM4[:, 1, 1].shape[0])
 
 print("sucsess!")
