@@ -272,9 +272,29 @@ for j in range(0, in_+1):
 
     CM4 = CM4buff
     m = np.min([m, CM4[1, :, 1].shape[0]])
-    # @TODO: für was diese Zeile?: sumWin[0:CM4.shape[1],:,:]=CM4+sumWin[1:CM4.shape[1],:,:]
     sumWin[:, 0:CM4.shape[1], :] = CM4+sumWin[:, 0:CM4.shape[1], :]
 
 
-sumWin=sumWin[0:m,:,:]
+#############################
+# Only look at valid window #
+#############################
+print("Only look at valid window")
+sumWin=sumWin[:, 0:m, :]
+
+#########################################################
+# Adjustment and looking for maximum at each delay time #
+#########################################################
+print("Adjustment and looking for maximum at each delay time")
+# @TODO: reshaping is missing: sumWin=permute(sumWin, [1 3 2]);
+max_abs_array = np.zeros(shape=(NrC,NrC))
+ind = np.zeros(shape=(NrC,NrC))
+for page in range(0, NrC):
+    for reihe in range(0, NrC):
+        array = np.absolute(sumWin[page, :, reihe])
+        max_abs_array[page][reihe] = np.max(np.absolute(sumWin[page, :, reihe]))
+        ind[page][reihe] = np.unravel_index(np.argmax(array, axis=None), array.shape)[0]
+
+CMres=np.zeros(shape=(NrC, NrC))
+DMres = np.squeeze(index)-2
+
 print("sucsess!")
