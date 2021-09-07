@@ -300,18 +300,22 @@ for i in range(0, sumWin.shape[0]):
     sumWin_size = sumWin.shape[0]
     size = np.array(sumWin.shape)
 
-    arr = np.array([[3, 3, 3], [0, 1, 2], [0, 0, 0]]) # Koordinaten
-    # f = np.ravel_multi_index(arr, (2, 2, 2), order='F')
-    ravel_index_f = np.ravel_multi_index(arr, (25, 3, 3), order='F')
-    ravel_index_c = np.ravel_multi_index(arr, (25, 3, 3), order='C')
-    # np.take(sumWin, 3, axis=1)[0]
-    CMres[:, i] = np.take(sumWin, ravel_index_f[0], axis=1 )[0]
+    # arr = np.array([[3, 3, 3], [0, 1, 2], [0, 0, 0]]) # Koordinaten
+    z1 = ind[i]
+    z2 = np.arange(0,sumWin_size)
+    z3 = i * np.ones(shape=(1, sumWin_size))[0]
 
-"""    z2 = ind[0:sumWin_size, i]
-    # z3 = range(0, sumWin_size)
-    z4 = i * np.ones(shape=(1, sumWin_size))
-    np.ravel_multi_index(z1, z2, mode='raise', order='C')
-    # CMres[:, i] = sumWin(sub2ind(size(sumWin), index(1,1:size(sumWin,2),i), 1:size(sumWin,2), i * ones(1,size(sumWin,2))))
-    # CMres(:, i)=sumWin(sub2ind(size(sumWin), index(1, 1: size(sumWin, 2), i), 1: size(sumWin, 2), i * ones(1,size(sumWin,2)))    );"""
+    arr = np.array([z1, z2, z3])
+    arr = arr.astype(int)
+    sumWin_shape = np.array([sumWin.shape[1], sumWin.shape[0], sumWin.shape[0]])
+    # f = np.ravel_multi_index(arr, (2, 2, 2), order='F')
+    # np.take(sumWin, 3, axis=1)[0]
+    if i ==0:
+        ravel_index_f = np.ravel_multi_index(arr, (25, 3, 3), order='F')
+        ravel_index_c = np.ravel_multi_index(arr, (25, 3, 3), order='C')
+        CMres[:, i] = np.take(sumWin, ravel_index_f[0], axis=1 )[i]
+    else:
+        CMres[:, i] = np.take(sumWin, ravel_index_f[0], axis=1)[i]
+
 
 print("sucsess!")
