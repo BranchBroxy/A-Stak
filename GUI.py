@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from Libraries.Import import get_filepath, import_data
 from Libraries.MatLabEngine import matlab_feautre_list,  matlab_calc_all_feature, matlab_calc_feature
 from Libraries.ElephantEngine import elephant_feauture_list, elephant_calc_all_feature, elephant_calc_feature
+from Libraries.AStakEngine import astak_feauture_list, astak_calc_all_feature, astak_calc_feature
 from Libraries.GUI_handler import get_matlab_path, get_drcell_path, install_libraries_and_unlock_tabs, initial_start, check_drcell_matlab_flag_enable_astak_elephant
 from Libraries.Plotter import plotter
 from functools import partial
@@ -216,8 +217,14 @@ class Ui_MainWindow(object):
         self.sta_tab_elephant_tab_auto_calc_button.clicked.connect(
             partial(elephant_calc_all_feature, ui=ui))  # Berechnung aller Elephant Feature
 
+        self.sta_tab_astak_tab_feature_calc_button.clicked.connect(
+            partial(astak_calc_feature, ui=ui))  # Berechnung des ausgewählten Astak Features (combobox)
+        self.sta_tab_astak_tab_auto_calc_button.clicked.connect(
+            partial(astak_calc_all_feature, ui=ui))  # Berechnung aller MatLab Feature
+
         self.sta_tab_matlab_tab_feature_comboBox.addItems(matlab_feautre_list)  # comboboxinhalt in matlab_tab
         self.sta_tab_elephant_tab_feature_comboBox.addItems(elephant_feauture_list)  # comboboxinhalt in elephant_tab
+        self.sta_tab_astak_tab_feature_comboBox.addItems(astak_feauture_list)   # comboboxinhalt in a_stak_tab
 
         self.v_tab_DrCellPath_browse_button.clicked.connect(
             partial(get_drcell_path, ui=ui))  # v_tab: Methode um DrCell Path auswählen zu können
@@ -229,6 +236,8 @@ class Ui_MainWindow(object):
                                                               ui=ui))  # Überprüfung ob DrCell und MatLab Pfad gesetzt wurden -> enable MatLab_tab
 
         self.d_tab_plot_button.clicked.connect(partial(plotter, ui=ui, MainWindow=MainWindow))
+
+        # End of my Part
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

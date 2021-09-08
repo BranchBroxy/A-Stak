@@ -15,6 +15,8 @@ from Libraries.Import import get_variables
 import numpy as np
 import os
 
+import matplotlib.pyplot as plt
+
 main_ui = object
 
 
@@ -34,9 +36,13 @@ def matlab_calc_feature(ui):
         ui.MainTextBrowser.append("Mean: " + str(round(feature_mean, 4)) + ", Values: " + str(
             round(feature_values, 4)) + ", Std: " + str(round(feature_std, 4)) + ", allEl: " + str(
             round(feature_allEl, 4)))
+
     except:
         ui.MainTextBrowser.append(
             "Mean: " + str(round(feature_mean, 4)) + ", Std: " + str(round(feature_std, 4)))
+
+    plt.imshow(feature_values, cmap='Blues', interpolation='nearest')
+    plt.show()
 
 def matlab_calc_all_feature(ui):
     global main_ui
