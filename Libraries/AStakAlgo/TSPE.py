@@ -259,7 +259,8 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     # Adjustment and looking for maximum at each delay time #
     #########################################################
     print("Adjustment and looking for maximum at each delay time")
-    # @TODO: reshaping is missing: sumWin=permute(sumWin, [1 3 2]);
+
+    sumWin = np.transpose(sumWin, (2, 1, 0))
     max_abs_array = np.zeros(shape=(NrC,NrC))
     ind = np.zeros(shape=(NrC,NrC))
     for page in range(0, NrC):
@@ -268,7 +269,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
             max_abs_array[page][reihe] = np.max(np.absolute(sumWin[page, :, reihe]))
             ind[page][reihe] = np.unravel_index(np.argmax(array, axis=None), array.shape)[0]
 
-    # ind = np.transpose(ind)
+    ind = np.transpose(ind)
     # ind = np.reshape(ind, newshape=(10,1,10))
 
     CMres=np.zeros(shape=(NrC, NrC))
@@ -294,6 +295,8 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
             CMres[:, i] = np.take(sumWin, ravel_index_f[0], axis=1 )[i]
         else:
             CMres[:, i] = np.take(sumWin, ravel_index_f[0], axis=1)[i]
+
+    test = np.ravel(sumWin[0], order='F')
 
     # end of TSPE
     np.fill_diagonal(CMres, 0)
