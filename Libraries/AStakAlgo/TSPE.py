@@ -104,7 +104,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     # n_spikes_einer_elektrode entspricht in matlab l * mat
     u_mean = n_spikes_einer_elektrode / NrS
     # u_0 = 60 * [u_mean]
-    u_0 = mat
+    u_0 = np.zeros(shape=(NrS, NrC))
     for i in range(0, mat.shape[0]):
         u_0[i] = mat[i] - u_mean
     # r=np.std(u_0)
@@ -140,24 +140,26 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     helping = np.max(neg_wins)+np.max(co_wins)
     helper = np.arange(helping)
     helper = helper[helping:0:-1]
-    helper = np.append(helper, 1)
+    # helper = np.append(helper, 1)
 
     # @TODO: für was ist dieser Code Teil?
-    if(np.max(neg_wins)+np.max(co_wins) > 0):
+    """if(np.max(neg_wins)+np.max(co_wins) > 0):
         bufCM = np.zeros(shape=(NrC, NrC))
         ind = 0
         for j in helper:
-            bufCM = CM[np.max(neg_wins) + np.max(co_wins) + j-1, :, :]
+            bufCM = CM_matlab[:, np.max(neg_wins) + np.max(co_wins) + j-1, :]
             # bufCM = CMbuffer
-            CM[ind] = np.transpose(bufCM)
-            ind = ind + 1
+            CM_matlab[ind] = np.transpose(bufCM)
+            ind = ind + 1"""
 
     print("stop")
     # Additional scaling for reduction of network burst impacts:
     # @TODO: not finished!!!!!
     if FLAG_NORM:
         s = np.zeros(shape=(ran.shape[1], 1))
-        for i in range(0, ran.shape[0]):
+        for i in range(0, ran.shape[1]):
+            diag_array = np.ones(shape=(anzahl_elektroden, anzahl_elektroden))
+            np.fill_diagonal(diag_array, 0)
             zwi = CM[i, np.diag(np.ones(shape=(NrC, 1)))]
             s[i] = np.sum(np.sum(zwi(~ np.isnan(CM[i, ~ np.diag(np.ones((NrC, 1)))]))))
 
@@ -170,7 +172,8 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     # sumWin=np.zeros(shape=(d+WB, NrC, NrC))
     sumWin=np.zeros(shape=(NrC, d+WB, NrC))
     in_=-1
-    temp_in_=30
+    temp_in_ = 30
+    halbe_anzahl_elektroden = int(anzahl_elektroden / 2)
     # @TODO: win_inner- und beginnigsgröße nicht hardcoden
     win_inner = np.zeros(shape=(1, 30))
     beginnings = np.zeros(shape=(1, 30))
@@ -195,7 +198,6 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
             beginnings[0, in_]=int(1+WB-win_before-win_p1)
             win_inner[0, in_]=win_in
     wnew_windows = [[] for temp_in_ in range(temp_in_)]
-    var1 = []
 
     for runner in range(0, len(windows)):
         for u in range(len(windows[runner])):
@@ -251,6 +253,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     #############################
     print("Only look at valid window")
     sumWin=sumWin[:, 0:m, :]
+    # @NOTE: BIS HIER HIN PASST ALLES!!!
 
     #########################################################
     # Adjustment and looking for maximum at each delay time #
@@ -265,8 +268,12 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
             max_abs_array[page][reihe] = np.max(np.absolute(sumWin[page, :, reihe]))
             ind[page][reihe] = np.unravel_index(np.argmax(array, axis=None), array.shape)[0]
 
+    # ind = np.transpose(ind)
+    # ind = np.reshape(ind, newshape=(10,1,10))
+
     CMres=np.zeros(shape=(NrC, NrC))
-    DMres = np.squeeze(index)-2
+    # DMres = np.squeeze(index)-2
+    DMres = ind - 1
     for i in range(0, sumWin.shape[0]):
         sumWin_size = sumWin.shape[0]
         size = np.array(sumWin.shape)
