@@ -269,12 +269,12 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
             max_abs_array[page][reihe] = np.max(np.absolute(sumWin[page, :, reihe]))
             ind[page][reihe] = np.unravel_index(np.argmax(array, axis=None), array.shape)[0]
 
-    ind = np.transpose(ind)
+    # ind = np.transpose(ind)
     # ind = np.reshape(ind, newshape=(10,1,10))
 
     CMres=np.zeros(shape=(NrC, NrC))
     # DMres = np.squeeze(index)-2
-    DMres = ind - 1
+    DMres = np.transpose(ind) - 1
     for i in range(0, sumWin.shape[0]):
         sumWin_size = sumWin.shape[0]
         size = np.array(sumWin.shape)
@@ -289,15 +289,16 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
         sumWin_shape = np.array([sumWin.shape[1], sumWin.shape[0], sumWin.shape[0]])
         # f = np.ravel_multi_index(arr, (2, 2, 2), order='F')
         # np.take(sumWin, 3, axis=1)[0]
-        if i ==0:
-            ravel_index_f = np.ravel_multi_index(arr, sumWin_shape, order='F')
-            ravel_index_c = np.ravel_multi_index(arr, sumWin_shape, order='C')
-            CMres[:, i] = np.take(sumWin, ravel_index_f[0], axis=1 )[i]
-        else:
-            CMres[:, i] = np.take(sumWin, ravel_index_f[0], axis=1)[i]
 
-    test = np.ravel(sumWin[0], order='F')
+        CMres_raveled = np.ravel(sumWin[i], order='F')
+        ravel_index_f = np.ravel_multi_index(arr, sumWin_shape, order='F')
+        if i != 0:
+            ravel_index_f = ravel_index_f - (int(CMres_raveled.shape[0]) * i)
+        # ravel_index_c = np.ravel_multi_index(arr, sumWin_shape, order='C')
 
+
+        for ravel_index in range(0, ravel_index_f.shape[0]):
+            CMres[ravel_index, i] = np.take(CMres_raveled, ravel_index_f[ravel_index])
     # end of TSPE
     np.fill_diagonal(CMres, 0)
     np.nan_to_num(x=CMres, copy=False, nan=0)
