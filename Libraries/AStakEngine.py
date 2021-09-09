@@ -18,8 +18,9 @@ def astak_calc_feature(ui):
     spike_list, amp, rec_dur, SaRa = get_variables()
     if feature == "TSPE":
         CMres, DMres, CM_exh, CM_inh = TSPE(spike_list, rec_dur)
-        plt.imshow(CMres, cmap='Blues', interpolation='nearest')
-        plt.show()
+        tspe_plt = plt
+        tspe_plt.imshow(CMres, cmap='Blues', interpolation='nearest')
+        tspe_plt.show()
 
 
 def astak_calc_all_feature(ui):

@@ -47,6 +47,8 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     NrC = int(anzahl_elektroden)
     NrS = int(rec_dur_in_ms) # in ms
 
+
+
     #################################
     # Generation of "sparse" Matrix #
     #################################
@@ -64,28 +66,32 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
 
     spikes1 = []
     spikes2 = []
+    n_spikes_einer_elektrode = np.zeros(shape=(1, anzahl_elektroden))
     for a in range(0, anzahl_elektroden):
         # @TODO: check for zeros, so they dont have to be trimmed, takes to much time
         train = np.trim_zeros(sdf_new[a]).tolist()
+        n_spikes_einer_elektrode[0, a] = len(train)
         if train != []:
             for i in train:
                 spikes1.append(i)
                 spikes2.append(a) # Wenn Elektroden wie in Matlab bei 1 Anfangen soll muss hier a+1 -> dann müssen aber noch mehr Änderung am Code durchführt werden
     vec1= np.array(spikes1, dtype=object)
     vec2= np.array(spikes2, dtype=object)
-    for a in range (0, vec1.shape[0]):
-        pass
+
+
+
+
     anzahl_elektroden = NrC
     rec_dur_in_ms = NrS
-
+    # @TODO: mat = np.zeros(shape=(NrS+1, NrC))? weil wir bei "0ms" anfangen zu zählen deshalb ist für die letze ms "kein Platz"
     np.max(sdf) # 59598
     mat = np.zeros(shape=(NrS, NrC))
     n_spikes = 0
-    n_spikes_einer_elektrode = np.zeros(shape=(1, anzahl_elektroden))
 
     for i in range(0, vec1.shape[0]):
-        if vec1[i] != 0: # vec1[0,i] same as vec2[0][i]
+        if vec1[i] != 0:  # vec1[0,i] same as vec2[0][i]
             mat[int(vec1[i])][int(vec2[i])] = 1
+
     mat_new = csr_matrix(mat)
 
 
@@ -94,16 +100,19 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     ################################################
 
     print("Calculation of std deviation and mean values")
-    l = np.ones(shape=(anzahl_elektroden, NrS))
+    l = np.ones(shape=(1, NrS))
     # n_spikes_einer_elektrode entspricht in matlab l * mat
     u_mean = n_spikes_einer_elektrode / NrS
     # u_0 = 60 * [u_mean]
-    u_0 = mat - u_mean
+    u_0 = mat
+    for i in range(0, mat.shape[0]):
+        u_0[i] = mat[i] - u_mean
     # r=np.std(u_0)
     r = np.zeros(shape=(1, anzahl_elektroden))
     for i in range(0, anzahl_elektroden):
         r_temp = np.std(u_0[:,i])
         r[0, i] = r_temp
+
 
 
     ##########################
@@ -122,7 +131,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
         CMbuffer = np.divide((np.dot(np.transpose(mat[i:mat.shape[0], :]), mat[0:mat.shape[0] - i, :])), (np.dot(np.transpose(r), r))) / NrS
         CM[i] = CMbuffer
         for counter_1 in range(0, NrC):
-            CM_matlab[counter_1, ind, :] = CMbuffer[counter_1]
+            CM_matlab[counter_1, ind, :] = CMbuffer[:, counter_1]
         ind = ind + 1
 
     # Usage of symmetric construction of cross correlation for faster calculation:
@@ -133,7 +142,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     helper = helper[helping:0:-1]
     helper = np.append(helper, 1)
 
-
+    # @TODO: für was ist dieser Code Teil?
     if(np.max(neg_wins)+np.max(co_wins) > 0):
         bufCM = np.zeros(shape=(NrC, NrC))
         ind = 0
@@ -145,7 +154,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
 
     print("stop")
     # Additional scaling for reduction of network burst impacts:
-    # not finished!!!!!
+    # @TODO: not finished!!!!!
     if FLAG_NORM:
         s = np.zeros(shape=(ran.shape[1], 1))
         for i in range(0, ran.shape[0]):
@@ -204,7 +213,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     # f = signal.fftconvolve(x, y)
     # CM(np.isnan(CM))=0
     np.nan_to_num(x=CM,copy=False, nan = 0) # if CM contains many NaNs, only NaNs remains after convolution. e.g. for very short spike trains
-
+    np.nan_to_num(x=CM_matlab, copy=False, nan=0)  # if CM contains many NaNs, only NaNs remains after convolution. e.g. for very short spike trains
     conv_flag = True
     # @TODO buffer.arrays, Größe darf nicht gehard codet sein
 
