@@ -13,7 +13,7 @@ from Libraries.MatLabEngine import matlab_feautre_list,  matlab_calc_all_feature
 from Libraries.ElephantEngine import elephant_feauture_list, elephant_calc_all_feature, elephant_calc_feature
 from Libraries.AStakEngine import astak_feauture_list, astak_calc_all_feature, astak_calc_feature
 from Libraries.GUI_handler import get_matlab_path, get_drcell_path, install_libraries_and_unlock_tabs, initial_start, check_drcell_matlab_flag_enable_astak_elephant
-from Libraries.Plotter import plotter
+from Libraries.Plotter import plotter, plot_tab_plotter
 from functools import partial
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -236,6 +236,9 @@ class Ui_MainWindow(object):
                                                               ui=ui))  # Überprüfung ob DrCell und MatLab Pfad gesetzt wurden -> enable MatLab_tab
 
         self.d_tab_plot_button.clicked.connect(partial(plotter, ui=ui, MainWindow=MainWindow))
+
+        self.p_tab_plot_ST_button.clicked.connect(plot_tab_plotter)
+
 
         # End of my Part
 

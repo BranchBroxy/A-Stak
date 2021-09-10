@@ -75,9 +75,10 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
             for i in train:
                 spikes1.append(i)
                 spikes2.append(a) # Wenn Elektroden wie in Matlab bei 1 Anfangen soll muss hier a+1 -> dann müssen aber noch mehr Änderung am Code durchführt werden
-    vec1= np.array(spikes1, dtype=object)
-    vec2= np.array(spikes2, dtype=object)
-
+    vec1 =  np.array(spikes1, dtype=object)
+    vec2 = np.array(spikes2, dtype=object)
+    # @TODO: Experiment!!
+    vec1 = vec1 - 1
 
 
 

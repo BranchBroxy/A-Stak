@@ -6,6 +6,9 @@ from PyQt5 import QtWidgets
 import numpy as np
 from Libraries.Import import get_variables
 
+from Libraries.AStakEngine import get_astak_variables
+from Libraries.MatLabEngine import get_matlab_variables
+
 main_ui = object
 MainWindow = object
 
@@ -87,3 +90,20 @@ class MplCanvas_init(FigureCanvasQTAgg):
         axs.axis([0, 60, 0, 60])
         axs.set_title('Plot')
         super(MplCanvas_init, self).__init__(fig)
+
+def plot_tab_plotter():
+    CMres_TSPE, DMres_TSPE, CM_exh_TSPE, CM_inh_TSPE = get_astak_variables()
+    feature_mean, feature_values, feature_std, feature_allEl = get_matlab_variables()
+    fig, axs = plt.subplots(1, 3)
+    fig.suptitle('TSPE')
+    axs[0].imshow(CMres_TSPE, cmap='Blues', interpolation='nearest')
+    axs[1].imshow(feature_values, cmap='Blues', interpolation='nearest')
+    difference = CMres_TSPE - feature_values
+    axs[2].imshow(difference, cmap='Blues', interpolation='nearest')
+    fig.show()
+    """tspe_plt = plt
+    tspe_plt.
+    tspe_plt.show()
+    mtl_plt = plt
+    mtl_plt.
+    mtl_plt.show()"""

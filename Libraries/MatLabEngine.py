@@ -19,9 +19,14 @@ import matplotlib.pyplot as plt
 
 main_ui = object
 
+global feature_mean, feature_values, feature_std, feature_allEl
+
+def get_matlab_variables():
+    return feature_mean, feature_values, feature_std, feature_allEl
 
 def matlab_calc_feature(ui):
     global main_ui
+    global feature_mean, feature_values, feature_std, feature_allEl
     main_ui = ui
     feature = ui.sta_tab_matlab_tab_feature_comboBox.currentText()
     spike_list, amp, rec_dur, SaRa = get_variables()
@@ -41,8 +46,7 @@ def matlab_calc_feature(ui):
         ui.MainTextBrowser.append(
             "Mean: " + str(round(feature_mean, 4)) + ", Std: " + str(round(feature_std, 4)))
 
-    plt.imshow(feature_values, cmap='Blues', interpolation='nearest')
-    plt.show()
+
 
 def matlab_calc_all_feature(ui):
     global main_ui
