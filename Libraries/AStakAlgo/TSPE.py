@@ -29,7 +29,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     # DMres - NxN matrix where N(i, j) is the transmission time with highest TSPE Value i->j
 
     # Original implementation by: Philipp Steigerwald [s160857@th-ab.de]
-    # print(spike_list)
+
 
 
     d = max_delay_time
