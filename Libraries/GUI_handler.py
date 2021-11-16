@@ -1,7 +1,7 @@
 import os
 from PyQt5.QtWidgets import QFileDialog
 from Libraries.Plotter import plotter_init
-from Libraries.MatLabEngine import matlab_first_call
+#from Libraries.MatLabEngine import matlab_first_call
 
 main_ui = object
 drcell_path = ""
@@ -48,6 +48,7 @@ def install_libraries_and_unlock_tabs(ui):
         ui.MainTextBrowser.setText("DrCell Pfad und MatLab Pfad wurden festgelegt")
         drcell_matlab_flag = True
         main_ui.sta_tab_matlab_tab.setEnabled(True)
+
     else:
         ui.MainTextBrowser.setText("DrCell Pfad und MatLab Pfad konnten nicht festgelegt werden!")
 
@@ -62,3 +63,8 @@ def check_drcell_matlab_flag_enable_astak_elephant(ui):
     global drcell_matlab_flag
     if drcell_matlab_flag == True:
         main_ui.sta_tab_matlab_tab.setEnabled(True)
+
+def get_matlab_drcell_path():
+    global drcell_path
+    global matlab_path
+    return drcell_path, matlab_path

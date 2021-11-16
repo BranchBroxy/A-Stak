@@ -12,14 +12,19 @@ My Path: /usr/local/MATLAB/R2021a/extern/engines/python
 
 import matlab.engine # funktioniert nur mit matlab 3.7
 from Libraries.Import import get_variables
+from Libraries.GUI_handler import get_matlab_drcell_path
 import numpy as np
 import os
 
 import matplotlib.pyplot as plt
 
-main_ui = object
 
+main_ui = object
+# drcell_path_var = ""
+# matlab_path_var = ""
 global feature_mean, feature_values, feature_std, feature_allEl
+
+
 
 def get_matlab_variables():
     return feature_mean, feature_values, feature_std, feature_allEl
@@ -68,6 +73,8 @@ def print_feature(mean, std):
         "Mean: " + str(round(mean, 4)) + ", Std: " + str(round(std, 4)))
 
 def matlab_all_feature(TS, AMP, rec_dur, SaRa, Selection, time_win, FR_min, N=0, binSize=0):
+
+    drcell_path, matlab_path = get_matlab_drcell_path()
     TS = np.transpose(TS)
     TS = matlab.double(TS.tolist())
     AMP = matlab.double(AMP.tolist())
@@ -75,16 +82,19 @@ def matlab_all_feature(TS, AMP, rec_dur, SaRa, Selection, time_win, FR_min, N=0,
     """path = os.getcwd()
     path = os.path.dirname(os.path.dirname(path))
     path = path + "/DrCell"""
-    path = "/media/broxy/38DA-A148/FauBox/Uni/Master/PyCharm/Astak_V1/DrCell"
+    # path = "/media/broxy/38DA-A148/FauBox/Uni/Master/PyCharm/Astak_V1/DrCell"
     # rec_dur = matlab.double(rec_dur)
     values = []
-    path_manuell = '/media/broxy/38DA-A148/FauBox/Uni/Master/PyCharm/Astak_V1/DrCell'
-    path_manuell_python = path_manuell + '/shared/Engines/Python'
+    # path_manuell = '/media/broxy/38DA-A148/FauBox/Uni/Master/PyCharm/Astak_V1/DrCell'
+    path_manuell_python = drcell_path + '/shared/Engines/Python'
     eng = matlab.engine.start_matlab()  # MatLab Umgebung aufrufen
     eng.cd(path_manuell_python)  # nach Spike-Contrast navigieren
-    eng.get_path(path_manuell, nargout=0)
-    eng.cd(path)  # nach Spike-Contrast navigieren
-    values = eng.CalcFeatures_call(TS, AMP, float(rec_dur), float(SaRa), Selection, float(time_win), float(FR_min), float(0), float(0))
+    # eng.get_path(path_manuell, nargout=0)
+    # eng.cd(path)  # nach Spike-Contrast navigieren
+    # values = eng.CalcFeatures_call(TS, AMP, float(rec_dur), float(SaRa), Selection, float(time_win), float(FR_min), float(0), float(0))
+    values = eng.adapter_python(drcell_path, TS, AMP, float(rec_dur), float(SaRa), Selection, float(time_win), float(FR_min),
+                                   float(0), float(0))
+
     eng.quit()
     return values
     # eng.adapter(TS, AMP, rec_dur, SaRa, Selection, time_win, FR_min, N, binSize)
