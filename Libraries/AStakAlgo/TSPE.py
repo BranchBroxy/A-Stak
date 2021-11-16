@@ -111,7 +111,7 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     # r=np.std(u_0)
     r = np.zeros(shape=(1, anzahl_elektroden))
     for i in range(0, anzahl_elektroden):
-        r_temp = np.std(u_0[:,i])
+        r_temp = np.std(u_0[:,i], ddof=1)
         r[0, i] = r_temp
 
 

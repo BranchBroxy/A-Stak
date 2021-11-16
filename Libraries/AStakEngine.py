@@ -1,14 +1,17 @@
 from Libraries.Import import get_variables
-from Libraries.AStakAlgo.TSPE import TSPE
+from Libraries.AStakAlgo import testAlgo
+
 import numpy as np
 import os
 
 from Libraries.AStakAlgo.TSPE import TSPE
 import matplotlib.pyplot as plt
 
-astak_feauture_list = ["TSPE", "another"]
+astak_feauture_list = ["TSPE", "another", "testAlgo"]
 main_ui = object
 global CMres_TSPE, DMres_TSPE, CM_exh_TSPE, CM_inh_TSPE
+
+global testVektor
 
 def get_astak_variables():
     return CMres_TSPE, DMres_TSPE, CM_exh_TSPE, CM_inh_TSPE
@@ -21,6 +24,9 @@ def astak_calc_feature(ui):
     spike_list, amp, rec_dur, SaRa = get_variables()
     if feature == "TSPE":
         CMres_TSPE, DMres_TSPE, CM_exh_TSPE, CM_inh_TSPE = TSPE(spike_list, rec_dur)
+
+    if feature == "testAlgo":
+        testVektor = testAlgo(spike_list, rec_dur)
 
 
 

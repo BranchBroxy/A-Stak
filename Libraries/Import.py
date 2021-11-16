@@ -16,7 +16,7 @@ amp = np.zeros(0)
 rec_dur = 0
 SaRa = 0
 
-
+#
 def get_variables():
     global spike_list
     global amp
