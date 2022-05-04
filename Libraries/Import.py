@@ -3,6 +3,7 @@ import h5py  # hdf5
 import scipy.io
 import os
 from PyQt5.QtWidgets import QFileDialog
+import pandas as pd
 import math
 
 filepath = ""
@@ -23,6 +24,12 @@ def get_variables():
     global rec_dur
     global SaRa
     return spike_list, amp, rec_dur, SaRa
+
+def get_file_and_extension():
+    global filepath
+    global extension
+    return filepath, extension
+
 
 
 def get_filepath(ui):
@@ -57,6 +64,28 @@ def import_bxr():
     print("Bxr Datei erfolgreich importiert")
     ui.MainTextBrowser.setText("Bxr Datei erfolgreich importiert")
 
+def import_dat():
+    global main_ui
+    global filepath
+
+    ui = main_ui
+    path = filepath
+
+    global spike_list
+    global amp
+    global rec_dur
+    global SaRa
+
+    i = pd.read_csv(path, sep="\s+", encoding="cp1252", nrows=0)
+    meta = list(i.columns.values)
+    data = pd.read_csv(path, sep="\s+", encoding="cp1252", skiprows=3)
+    rec_dur = data.iloc[:, 0].max() # Recording Duration
+    SaRa = meta[2] # Sample Rate
+    spike_list = data.iloc[:, 1:].to_numpy()
+    amp = np.zeros([spike_list.shape[1], spike_list.shape[0]])
+
+    print("Dat Datei erfolgreich importiert")
+    ui.MainTextBrowser.setText("Dat Datei erfolgreich importiert")
 
 def import_mat():
     global main_ui
@@ -73,13 +102,22 @@ def import_mat():
     mat_data = scipy.io.loadmat(path)
     try:
         spike_list = np.transpose(mat_data["SPIKEZ"]["TS"][0, 0])
+        # if spike_list.shape ==
         spike_list = np.where(np.invert(np.isnan(spike_list)), spike_list, 0)
         amp = np.zeros([spike_list.shape[1], spike_list.shape[0]])
         rec_dur = float(mat_data["SPIKEZ"][0, 0]["PREF"][0, 0]["rec_dur"][0])
         SaRa = mat_data["SPIKEZ"][0, 0]["PREF"][0, 0]["SaRa"][0][0]
         flag_mat_v1 = True
-        print("Mat Datei erfolgreich importiert")
-        ui.MainTextBrowser.setText("Mat Datei erfolgreich importiert")
+        if np.transpose(mat_data["temp"]["SPIKEZ"][0, 0]["TS"][0, 0]).shape[1] == 0:
+            print("Mat Datei leer")
+            ui.MainTextBrowser.setText("Mat Datei leer")
+            spike_list = np.array([1, 1])
+            amp = np.array([0, 0])
+            rec_dur = 1
+            SaRa = 1000
+        else:
+            print("Mat Datei erfolgreich importiert")
+            ui.MainTextBrowser.setText("Mat Datei erfolgreich importiert")
     except:
         try:
             spike_list = np.transpose(mat_data["temp"]["SPIKEZ"][0, 0]["TS"][0, 0])
@@ -87,13 +125,21 @@ def import_mat():
             rec_dur = mat_data["temp"]["SPIKEZ"][0, 0]["PREF"][0,0]["rec_dur"][0, 0][0][0]
             SaRa = mat_data["temp"]["SPIKEZ"][0, 0]["PREF"][0, 0]["SaRa"][0, 0][0][0]
             flat_mat_v2 = True
-            print("Mat Datei erfolgreich importiert")
-            ui.MainTextBrowser.setText("Mat Datei erfolgreich importiert")
+            if np.transpose(mat_data["temp"]["SPIKEZ"][0, 0]["TS"][0, 0]).shape[1] == 0:
+                print("Mat Datei leer")
+                ui.MainTextBrowser.setText("Mat Datei leer")
+                spike_list = np.array([1, 1])
+                amp = np.array([0, 0])
+                rec_dur = 1
+                SaRa = 1000
+            else:
+                print("Mat Datei erfolgreich importiert")
+                ui.MainTextBrowser.setText("Mat Datei erfolgreich importiert")
         except:
             print("Mat Datei konnte nicht importiert werden")
             ui.MainTextBrowser.setText("Mat Datei konnte nicht erfolgreich importiert werden")
 
-    #print(Import.amp)
+    print("here")
 
 
 
@@ -103,11 +149,13 @@ def import_data():
         import_bxr()
     elif extension == ".mat":
         import_mat()
+    elif extension == ".dat":
+        import_dat()
     elif extension == ".py":
         print("It's a .py")
     else:
         print("Sorry Datei kann nicht geöffnet werden :(")
-
+    print(filepath)
 
 
 class ReadBxr:

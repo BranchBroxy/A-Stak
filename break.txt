@@ -1,0 +1,50 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from scipy.misc import electrocardiogram
+from scipy.signal import find_peaks
+
+spike_list = np.zeros(0)
+amp = np.zeros(0)
+rec_dur = 0
+SaRa = 0
+
+filepath = "/media/broxy/C267-9FF0/Data/20220221/20 LSD/Messung21.02.2022_17-00-50.dat"
+def import_dat():
+
+    global filepath
+
+
+    path = filepath
+
+    global spike_list
+    global amp
+    global rec_dur
+    global SaRa
+
+    i = pd.read_csv(path, sep="\s+", encoding="cp1252", nrows=0)
+    meta = list(i.columns.values)
+    data = pd.read_csv(path, sep="\s+", encoding="cp1252", skiprows=3)
+    rec_dur = data.iloc[:, 0].max() # Recording Duration
+    SaRa = meta[2] # Sample Rate
+    spike_list = data.iloc[:, 1:].to_numpy()
+    amp = np.zeros([spike_list.shape[1], spike_list.shape[0]])
+
+    print("Dat Datei erfolgreich importiert")
+
+import_dat()
+#fig, ax = plt.subplots()
+#ax.plot(spike_list[:, 21])
+#plt.show()
+x = spike_list[:, 21]
+
+xmax  = np.max(x)
+xmin = np.min(x)
+# ymin, ymax
+
+peaks, _ = find_peaks(x, distance=150)
+
+# ax.set_ylim([ymin, ymax])
+plt.plot(x)
+#plt.plot(peaks, x[peaks], "x")
+plt.show()

@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1116, 759)
-        icon = QtGui.QIcon("Logo/hablogo.tif")
+        icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../../../../../../../../../../Masterarbeit/th_ab_logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setAutoFillBackground(True)
@@ -165,6 +165,24 @@ class Ui_MainWindow(object):
         self.sta_tab_astak_tab_auto_calc_comboBox.setObjectName("sta_tab_astak_tab_auto_calc_comboBox")
         self.sta_tab_tab.addTab(self.sta_tab_astak_tab, "")
         self.tab.addTab(self.sta_tab, "")
+        self.k_tab = QtWidgets.QWidget()
+        self.k_tab.setObjectName("k_tab")
+        self.k_tab_feature_button = QtWidgets.QPushButton(self.k_tab)
+        self.k_tab_feature_button.setGeometry(QtCore.QRect(510, 70, 131, 71))
+        self.k_tab_feature_button.setObjectName("k_tab_feature_button")
+        self.k_tab_comboBox = QtWidgets.QComboBox(self.k_tab)
+        self.k_tab_comboBox.setGeometry(QtCore.QRect(490, 10, 171, 31))
+        self.k_tab_comboBox.setObjectName("k_tab_comboBox")
+        self.k_tab_gew_label = QtWidgets.QLabel(self.k_tab)
+        self.k_tab_gew_label.setGeometry(QtCore.QRect(350, 10, 141, 16))
+        self.k_tab_gew_label.setObjectName("k_tab_gew_label")
+        self.k_tab_vor_label = QtWidgets.QLabel(self.k_tab)
+        self.k_tab_vor_label.setGeometry(QtCore.QRect(20, 10, 131, 16))
+        self.k_tab_vor_label.setObjectName("k_tab_vor_label")
+        self.k_tab_lineEdit = QtWidgets.QLineEdit(self.k_tab)
+        self.k_tab_lineEdit.setGeometry(QtCore.QRect(160, 10, 111, 31))
+        self.k_tab_lineEdit.setObjectName("k_tab_lineEdit")
+        self.tab.addTab(self.k_tab, "")
         self.p_tab = QtWidgets.QWidget()
         self.p_tab.setObjectName("p_tab")
         self.p_tab_plot_ST_button = QtWidgets.QPushButton(self.p_tab)
@@ -199,7 +217,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tab.setCurrentIndex(0)
-        self.sta_tab_tab.setCurrentIndex(0)
+        self.sta_tab_tab.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         # My Part
@@ -230,10 +248,8 @@ class Ui_MainWindow(object):
             partial(get_drcell_path, ui=ui))  # v_tab: Methode um DrCell Path auswählen zu können
         self.v_tab_MatLabPath_browse_button.clicked.connect(
             partial(get_matlab_path, ui=ui))  # v_tab: Methode um MatLab Path auswählen zu können
-        self.v_tab_libraries_button.clicked.connect(partial(install_libraries_and_unlock_tabs,
-                                                            ui=ui))  # Einbinden der Pfade und installieren aller benötigten Libs
-        self.d_tab_data_import_button.clicked.connect(partial(check_drcell_matlab_flag_enable_astak_elephant,
-                                                              ui=ui))  # Überprüfung ob DrCell und MatLab Pfad gesetzt wurden -> enable MatLab_tab
+        self.v_tab_libraries_button.clicked.connect(partial(install_libraries_and_unlock_tabs, ui=ui))  # Einbinden der Pfade und installieren aller benötigten Libs
+        self.d_tab_data_import_button.clicked.connect(partial(check_drcell_matlab_flag_enable_astak_elephant, ui=ui))  # Überprüfung ob DrCell und MatLab Pfad gesetzt wurden -> enable MatLab_tab
 
         self.d_tab_plot_button.clicked.connect(partial(plotter, ui=ui, MainWindow=MainWindow))
 
@@ -277,23 +293,28 @@ class Ui_MainWindow(object):
         self.sta_tab_matlab_tab_auto_calc_label.setStatusTip(_translate("MainWindow", "Ausgabeformat"))
         self.sta_tab_matlab_tab_auto_calc_label.setText(_translate("MainWindow", "Ausgabeformat:"))
         self.sta_tab_matlab_tab_auto_calc_comboBox.setStatusTip(_translate("MainWindow", "Ausgabeformat"))
-        self.sta_tab_matlab_tab_auto_calc_button.setStatusTip(_translate("MainWindow", "Automatisierte Berechnung durchführen"))
+        self.sta_tab_matlab_tab_auto_calc_button.setStatusTip(
+            _translate("MainWindow", "Automatisierte Berechnung durchführen"))
         self.sta_tab_matlab_tab_auto_calc_button.setText(_translate("MainWindow", "Automatisierte Berechnung"))
-        self.sta_tab_tab.setTabText(self.sta_tab_tab.indexOf(self.sta_tab_matlab_tab), _translate("MainWindow", "MatLab"))
+        self.sta_tab_tab.setTabText(self.sta_tab_tab.indexOf(self.sta_tab_matlab_tab),
+                                    _translate("MainWindow", "MatLab"))
         self.sta_tab_elephant_tab_feature_comboBox.setStatusTip(_translate("MainWindow", "Feature"))
         self.sta_tab_elephant_tab_feature_label.setStatusTip(_translate("MainWindow", "Feature"))
         self.sta_tab_elephant_tab_feature_label.setText(_translate("MainWindow", "Feature:"))
-        self.sta_tab_elephant_tab_auto_calc_button.setStatusTip(_translate("MainWindow", "Automatisierte Berechnung durchführen"))
+        self.sta_tab_elephant_tab_auto_calc_button.setStatusTip(
+            _translate("MainWindow", "Automatisierte Berechnung durchführen"))
         self.sta_tab_elephant_tab_auto_calc_button.setText(_translate("MainWindow", "Automatisierte Berechnung"))
         self.sta_tab_elephant_tab_feature_calc_button.setStatusTip(_translate("MainWindow", "Feature berechnen"))
         self.sta_tab_elephant_tab_feature_calc_button.setText(_translate("MainWindow", "Berechnen"))
         self.sta_tab_elephant_tab_auto_calc_comboBox.setStatusTip(_translate("MainWindow", "Ausgabeformat"))
         self.sta_tab_elephant_tab_auto_calc_label.setStatusTip(_translate("MainWindow", "Ausgabeformat"))
         self.sta_tab_elephant_tab_auto_calc_label.setText(_translate("MainWindow", "Ausgabeformat:"))
-        self.sta_tab_tab.setTabText(self.sta_tab_tab.indexOf(self.sta_tab_elephant_tab), _translate("MainWindow", "Elephant"))
+        self.sta_tab_tab.setTabText(self.sta_tab_tab.indexOf(self.sta_tab_elephant_tab),
+                                    _translate("MainWindow", "Elephant"))
         self.sta_tab_astak_tab_feature_calc_button.setStatusTip(_translate("MainWindow", "Feature berechnen"))
         self.sta_tab_astak_tab_feature_calc_button.setText(_translate("MainWindow", "Berechnen"))
-        self.sta_tab_astak_tab_auto_calc_button.setStatusTip(_translate("MainWindow", "Automatisierte Berechnung durchführen"))
+        self.sta_tab_astak_tab_auto_calc_button.setStatusTip(
+            _translate("MainWindow", "Automatisierte Berechnung durchführen"))
         self.sta_tab_astak_tab_auto_calc_button.setText(_translate("MainWindow", "Automatisierte Berechnung"))
         self.sta_tab_astak_tab_auto_calc_label.setStatusTip(_translate("MainWindow", "Ausgabeformat"))
         self.sta_tab_astak_tab_auto_calc_label.setText(_translate("MainWindow", "Ausgabeformat:"))
@@ -301,8 +322,17 @@ class Ui_MainWindow(object):
         self.sta_tab_astak_tab_feature_label.setStatusTip(_translate("MainWindow", "Feature"))
         self.sta_tab_astak_tab_feature_label.setText(_translate("MainWindow", "Feature:"))
         self.sta_tab_astak_tab_auto_calc_comboBox.setStatusTip(_translate("MainWindow", "Ausgabeformat"))
-        self.sta_tab_tab.setTabText(self.sta_tab_tab.indexOf(self.sta_tab_astak_tab), _translate("MainWindow", "A-Stak"))
+        self.sta_tab_tab.setTabText(self.sta_tab_tab.indexOf(self.sta_tab_astak_tab),
+                                    _translate("MainWindow", "A-Stak"))
         self.tab.setTabText(self.tab.indexOf(self.sta_tab), _translate("MainWindow", "Spike Train Analyse"))
+        self.k_tab_feature_button.setStatusTip(_translate("MainWindow", "Feature Plotten"))
+        self.k_tab_feature_button.setText(_translate("MainWindow", "Konvertieren"))
+        self.k_tab_comboBox.setStatusTip(_translate("MainWindow", "Feature wählen"))
+        self.k_tab_gew_label.setStatusTip(_translate("MainWindow", "Feature"))
+        self.k_tab_gew_label.setText(_translate("MainWindow", "Gewünschtes Format:"))
+        self.k_tab_vor_label.setText(_translate("MainWindow", "Vorliegendes Format:"))
+        self.k_tab_lineEdit.setStatusTip(_translate("MainWindow", "DrCell Pfad"))
+        self.tab.setTabText(self.tab.indexOf(self.k_tab), _translate("MainWindow", "Konvertierung"))
         self.p_tab_plot_ST_button.setStatusTip(_translate("MainWindow", "Spike Trains plotten"))
         self.p_tab_plot_ST_button.setText(_translate("MainWindow", "Plotte Spike Trains"))
         self.p_tab_plot_feature_button.setStatusTip(_translate("MainWindow", "Feature Plotten"))
