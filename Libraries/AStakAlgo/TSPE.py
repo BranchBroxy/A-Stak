@@ -306,6 +306,5 @@ def TSPE(spike_list, rec_dur, max_delay_time=25, neg_wins=np.array([3, 4, 5, 6, 
     CM_exh = np.where(CMres < 0, CMres, 0)
     CM_inh = np.where(CMres > 0, CMres, 0)
 
-
-    return CMres, DMres, CM_exh, CM_inh
     print("sucsess!")
+    return CMres, DMres, CM_exh, CM_inh
